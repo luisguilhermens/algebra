@@ -1,0 +1,213 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{amsmath} % Pacote para ambientes matemáticos avançados
+\usepackage{amsfonts} % Pacote para fontes matemáticas (opcional)
+\usepackage{amssymb} % Pacote para símbolos matemáticos adicionais (opcional)
+\usepackage{tkz-euclide} 
+\usetikzlibrary{patterns}
+\usepackage{gensymb}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usetikzlibrary{angles,quotes}
+\usepackage{setspace}
+\usepackage{indentfirst} % Indenta o primeiro parágrafo de cada seção
+\setlength{\parindent}{2em} % Define o comprimento da indentação (2em é um exemplo)
+\setstretch{1.25} 
+
+\geometry{
+	a4paper,
+	right=20mm,
+	left=20mm,
+	top=20mm,
+	bottom=20mm
+}
+
+
+\begin{document}
+	
+Sabendo que imagens podem ser interpretadas como matrizes, pode-se usar a seguinte matriz como exemplo:
+
+\setcounter{MaxMatrixCols}{20}
+\[
+\begin{bmatrix}
+	0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\
+	0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+	1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 \\
+	1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+	1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+	0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+	0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+	0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0
+\end{bmatrix}
+\]
+onde cada célula representa um pixel. O número 0 indica que o pixel está vazio, e o número 1 que o pixel está pintado (nesse caso, de preto).
+
+Com essa matriz, pode-se usar o código no apêndice 1 para gerar a seguinte imagem:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{C:/Users/ACER/Downloads/coracao}
+	\caption{Coração gerado pela matriz}
+\end{figure}
+
+Essa imagem permite entender como as matrizes de fato representam a posição das cores na tela e como ela forma as imagens.
+
+Ainda, sabe-se que transformações lineares são funções que operam sobre espaços vetoriais e mapeiam vetores de um espaço vetorial em outro, ou até no mesmo. Uma das transformações lineares mais importantes no tratamento de imagens é a rotação de vetores, a qual mapeia um vetor para outro, girando-o em torno da origem por um certo ângulo $\theta$. Em termos geométricos, ao aplicar uma rotação, a magnitude do vetor não se altera, mas a direção do vetor é modificada de acordo com o ângulo de rotação.
+
+Nesse sentido, é conhecido que matriz a qual descreve o operador linear de uma rotação no sentido anti-horário em torno da origem de um vetor no $\mathbb{R}^2$ é: 
+
+\[
+\begin{bmatrix}
+	cos(\theta) & -sen(\theta)  \\
+	sen(\theta) & cos(\theta) 
+\end{bmatrix}
+\]
+
+Ou seja,
+
+\[
+\begin{bmatrix} x' \\ y' \end{bmatrix} = 
+\begin{bmatrix} 
+	\cos(\theta) & -\sin(\theta) \\
+	\sin(\theta) & \cos(\theta) 
+\end{bmatrix}
+\begin{bmatrix} x \\ y \end{bmatrix}
+\]
+onde x' e y' representam as coordenadas do vetor rotado.
+
+Portanto, pode-se usar essa transformação linear para calcular a posição da imagem quando rotacionada. O código no apêndice 2 fez justamente esse cálculo para $\theta=180^{\circ}$, o que gera a seguinte imagem:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{C:/Users/ACER/Downloads/coracao2}
+	\caption{Coração gerado pela matriz rotada}
+\end{figure}
+
+
+
+\section*{Apêndices}
+\subsection*{Apêndice 1: Código para gerar a imagem}
+
+A seguir está o código usado para gerar a imagem do coração com base na matriz dos pixels.
+
+\begin{verbatim}
+	import numpy as np
+	import matplotlib.pyplot as plt
+	
+	# Definir o coração como uma matriz
+	coracao = np.array([
+	[0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
+	[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+	[1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+	[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+	[0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+	[0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+	[0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+	])
+	
+	# Extrai as coordenadas dos pontos com valor 1
+	coordenadas = np.argwhere(coracao == 1).T  # Coordenadas no formato (linha, coluna)
+	
+	# Ajusta para o formato cartesiano (x, y)
+	coordenadas = np.vstack((coordenadas[1], coordenadas[0]))
+	
+	# Plotar o coração 
+	plt.figure(figsize=(10, 5))
+	
+	plt.subplot(1, 2, 1)
+	plt.title("Coração Original")
+	plt.imshow(coracao, cmap='Greys', interpolation='nearest')
+	plt.axis('off')
+	
+	plt.show()
+\end{verbatim}
+
+\subsection*{Apêndice 2: Código para rotacionar a imagem}
+A seguir está o código usado para aplicar a transformação linear de rotação na matriz dos pixels, e em seguida gerar a imagem do coração rotacionado.
+	
+\begin{verbatim}
+	import numpy as np
+	import matplotlib.pyplot as plt
+	
+	# Definir o coração como uma matriz
+	coracao = np.array([
+	[0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
+	[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+	[1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+	[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+	[0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+	[0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+	[0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+	])
+	
+	# Extrair as coordenadas dos pontos com valor 1
+	coordenadas = np.argwhere(coracao == 1).T  # Coordenadas no formato (linha, coluna)
+	
+	# Ajustar para o formato cartesiano (x, y)
+	coordenadas = np.vstack((coordenadas[1], coordenadas[0]))  # (x, y)
+	
+	# Calcular o centro da imagem para centralizar a rotação
+	centro = coordenadas.mean(axis=1, keepdims=True)
+	
+	# Centralizar as coordenadas (transladar para o centro)
+	coordenadas_centralizadas = coordenadas - centro
+	
+	# Ângulo de rotação (180 graus)
+	angulo = np.radians(180)
+	
+	# Matriz de rotação
+	matriz_rotacao = np.array([
+	[np.cos(angulo), -np.sin(angulo)],
+	[np.sin(angulo),  np.cos(angulo)]
+	])
+	
+	# Aplicar a matriz de rotação
+	coordenadas_rotadas = np.dot(matriz_rotacao, coordenadas_centralizadas)
+	
+	# Reverter a translação para o centro original
+	coordenadas_rotadas += centro
+	
+	# Arredondar as coordenadas e converter para inteiros
+	coordenadas_rotadas = np.round(coordenadas_rotadas).astype(int)
+	
+	# Encontrar os limites da nova imagem para definir o tamanho da matriz
+	min_x, min_y = coordenadas_rotadas.min(axis=1)
+	max_x, max_y = coordenadas_rotadas.max(axis=1)
+	
+	# Ajustar a matriz para acomodar a rotação
+	largura = max_x - min_x + 1
+	altura = max_y - min_y + 1
+	
+	# Criar uma nova matriz para o coração rotado, com tamanho ajustado
+	coracao_rotado = np.zeros((altura, largura))
+	
+	# Ajustar as coordenadas para o novo tamanho da matriz
+	coordenadas_rotadas_ajustadas = coordenadas_rotadas - np.array([[min_x], [min_y]])
+	
+	# Preencher a matriz rotacionada com os valores 1
+	for x, y in coordenadas_rotadas_ajustadas.T:
+	coracao_rotado[y, x] = 1
+	
+	# Plotar o coração rotado
+	plt.figure(figsize=(10, 5))
+	
+	# Rotado
+	plt.subplot(1, 2, 2)
+	plt.imshow(coracao_rotado, cmap='Greys', interpolation='nearest')
+	plt.axis('off')
+	
+	plt.show()
+\end{verbatim}
+
+\end{document}
